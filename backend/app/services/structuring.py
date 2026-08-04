@@ -74,4 +74,4 @@ async def structure_output(raw_text: str, output_type, task_description: str):
                 if attempt == 0:
                     await asyncio.sleep(1)
 
-    raise last_error
+    raise last_error or RuntimeError("structure_output: no clients available")
