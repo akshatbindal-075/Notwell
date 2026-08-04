@@ -1,6 +1,6 @@
 <p align="center">
   <img src="frontend/public/notewell-logo.png" alt="Notewell Logo" width="55">
-  <span style="font-size: 2.2em; font-weight: bold; vertical-align: middle; margin-left: 10px;">
+  <span style="font-size: 2.2; font-weight: bold; vertical-align: middle; margin-left: 10px;">
     Notewell
   </span>
 </p>
