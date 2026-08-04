@@ -1,8 +1,7 @@
-# Notewell — AI Clinical Documentation Assistant
-
-<p align="center">
-  <img src="frontend/public/notewell-logo.png" width="90" alt="Notewell logo" />
-</p>
+<h1 align="center">
+  <img src="frontend/public/notewell-logo.png" alt="Notewell Logo" width="50" style="vertical-align: middle;">
+  Notewell — AI Clinical Documentation Assistant
+</h1>
 
 <p align="center">
   <img src="frontend/public/screenshot.png" alt="Notewell — AI Clinical Documentation Assistant UI" width="100%"/>
@@ -40,7 +39,7 @@
 │                                 NOTWELL 6-AGENT PIPELINE                                    │
 │                                                                                             │
 │  ┌─────────────────────────┐      ┌─────────────────────────┐      ┌─────────────────────┐  │
-│  │ 1. Patient History      │─────▶│ 2. Clinical Note Writer │─────▶│ 3. Medical Summary  │  │
+│  │ 1. Patient History      │─────▶│ 2. Clinical Note Writer │─────▶│ 3. Medical Summary │  │
 │  │    Agent                │      │    Agent                │      │    Agent            │  │
 │  └───────────┬─────────────┘      └───────────┬─────────────┘      └──────────┬──────────┘  │
 │              │                                │                               │             │
@@ -48,7 +47,7 @@
 │         [ChromaDB RAG]                  [ICD-10 Lookup]                       │             │
 │                                                                               │             │
 │  ┌─────────────────────────┐      ┌─────────────────────────┐                 │             │
-│  │ 6. Documentation        │◀─────│ 5. Follow-up            │◀────────────────┘             │
+│  │ 6. Documentation        │◀─────│ 5. Follow-up           │◀────────────────┘             │
 │  │    Reviewer Agent       │      │    Coordinator Agent    │                               │
 │  └───────────┬─────────────┘      └───────────┬─────────────┘                               │
 │              │                                │                                             │
