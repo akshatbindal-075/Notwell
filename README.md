@@ -1,8 +1,17 @@
 <p align="center">
-  <img src="frontend/public/notewell-logo.png" width="70" alt="Notewell Logo">
+  <table align="center" cellspacing="0" cellpadding="0">
+    <tr>
+      <td valign="middle">
+        <img src="frontend/public/notewell-logo.png" width="60" alt="Notewell Logo">
+      </td>
+      <td valign="middle" style="padding-left:12px;">
+        <span style="font-size:2.2em; font-weight:700;">
+          Notewell — AI Clinical Documentation Assistant
+        </span>
+      </td>
+    </tr>
+  </table>
 </p>
-
-# <p align="center">Notewell — AI Clinical Documentation Assistant</p>
 
 <p align="center">
   <img src="frontend/public/screenshot.png" alt="Notewell — AI Clinical Documentation Assistant UI" width="100%"/>
