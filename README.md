@@ -1,16 +1,12 @@
 <p align="center">
-  <table align="center" cellspacing="0" cellpadding="0">
-    <tr>
-      <td valign="middle">
-        <img src="frontend/public/notewell-logo.png" width="60" alt="Notewell Logo">
-      </td>
-      <td valign="middle" style="padding-left:12px;">
-        <span style="font-size:2.2em; font-weight:700;">
-          Notewell — AI Clinical Documentation Assistant
-        </span>
-      </td>
-    </tr>
-  </table>
+  <img src="frontend/public/notewell-logo.png" alt="Notewell Logo" width="55">
+  <span style="font-size: 2.2em; font-weight: bold; vertical-align: middle; margin-left: 10px;">
+    Notewell
+  </span>
+</p>
+
+<p align="center">
+  <strong>AI Clinical Documentation Assistant</strong>
 </p>
 
 <p align="center">
