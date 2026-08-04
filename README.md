@@ -1,10 +1,10 @@
-<table align="center">
+<table align="center" border="0" cellspacing="0" cellpadding="0">
   <tr>
     <td valign="middle">
       <img src="frontend/public/notewell-logo.png" width="60" alt="Notewell Logo">
     </td>
-    <td valign="middle">
-      <h1>Notewell — AI Clinical Documentation Assistant</h1>
+    <td valign="middle" style="padding-left: 12px;">
+      <h1 style="margin: 0;">Notewell — AI Clinical Documentation Assistant</h1>
     </td>
   </tr>
 </table>
