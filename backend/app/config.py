@@ -1,0 +1,44 @@
+"""
+Central configuration. All secrets come from environment variables —
+never hardcode keys. Copy .env.example to .env and fill in values.
+"""
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+
+class Settings:
+    # --- LLM Providers (no OpenAI key required) ---
+    GROQ_API_KEY: str = os.getenv("GROQ_API_KEY", "")
+    GROQ_BASE_URL: str = "https://api.groq.com/openai/v1"
+
+    OPENROUTER_API_KEY: str = os.getenv("OPENROUTER_API_KEY", "")
+    OPENROUTER_BASE_URL: str = "https://openrouter.ai/api/v1"
+
+    GEMINI_API_KEY: str = os.getenv("GEMINI_API_KEY", "")
+    GEMINI_BASE_URL: str = "https://generativelanguage.googleapis.com/v1beta/openai/"
+
+    # --- Model assignment per agent (override via env if needed) ---
+    MODEL_FAST: str = os.getenv("MODEL_FAST", "llama-3.3-70b-versatile")          # Groq — high volume agents
+    MODEL_REASONING: str = os.getenv("MODEL_REASONING", "deepseek/deepseek-chat")  # OpenRouter — planning/review
+    MODEL_LONGCTX: str = os.getenv("MODEL_LONGCTX", "gemini-2.0-flash")            # Gemini — long patient history context
+
+    # --- Database ---
+    DATABASE_URL: str = os.getenv("DATABASE_URL", "sqlite:///./clinical_assistant.db")
+
+    # --- Session persistence ---
+    SESSION_DB_PATH: str = os.getenv("SESSION_DB_PATH", "./sessions.db")
+
+    # --- External tool APIs ---
+    ICD10_API_BASE: str = "https://clinicaltables.nlm.nih.gov/api/icd10cm/v3/search"  # free, no key needed
+    SENDGRID_API_KEY: str = os.getenv("SENDGRID_API_KEY", "")
+    SENDGRID_FROM_EMAIL: str = os.getenv("SENDGRID_FROM_EMAIL", "noreply@example.com")
+
+    # --- App ---
+    ENV: str = os.getenv("ENV", "development")
+    ALLOWED_ORIGINS: list = os.getenv("ALLOWED_ORIGINS", "http://localhost:3000").split(",")
+    LOG_LEVEL: str = os.getenv("LOG_LEVEL", "INFO")
+
+
+settings = Settings()
