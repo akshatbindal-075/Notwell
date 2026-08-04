@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img src="frontend/public/notewell-logo.png" alt="Notewell Logo" width="50" style="vertical-align: middle;">
+  <img src="frontend/public/notewell-logo.png" alt="Notewell Logo" width="30" style="vertical-align: middle;">
   <span style="vertical-align: middle;">Notewell</span>
 </h1>
 <p align="center">
