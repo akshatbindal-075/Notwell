@@ -1,8 +1,9 @@
+<h1 align="center">
+  <img src="frontend/public/notewell-logo.png" alt="Notewell Logo" width="65" style="vertical-align: middle;">
+  <span style="vertical-align: middle;">Notewell</span>
+</h1>
 <p align="center">
-  <img src="frontend/public/notewell-logo.png" alt="Notewell Logo" width="55">
-  <span style="font-size: 2.2; font-weight: bold; vertical-align: middle; margin-left: 10px;">
-    Notewell
-  </span>
+  <strong>AI Clinical Documentation Assistant</strong>
 </p>
 
 <p align="center">
