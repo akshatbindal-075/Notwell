@@ -35,6 +35,17 @@ def on_startup():
     logger.info("Database initialized. AI Clinical Documentation Assistant ready.")
 
 
+@app.get("/")
+def root():
+    return {
+        "app": "AI Clinical Documentation Assistant API",
+        "status": "online",
+        "health": "/health",
+        "docs": "/docs",
+    }
+
+
 @app.get("/health")
 def health_check():
     return {"status": "ok"}
+
