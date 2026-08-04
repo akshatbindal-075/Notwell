@@ -20,15 +20,18 @@ from agents import OpenAIChatCompletionsModel
 from app.config import settings
 
 # --- Clients ---
-openrouter_client = AsyncOpenAI(api_key=settings.OPENROUTER_API_KEY, base_url=settings.OPENROUTER_BASE_URL)
-gemini_client = AsyncOpenAI(api_key=settings.GEMINI_API_KEY, base_url=settings.GEMINI_BASE_URL)
+_openrouter_key = settings.OPENROUTER_API_KEY or "sk-or-placeholder"
+_gemini_key = settings.GEMINI_API_KEY or "placeholder"
+
+openrouter_client = AsyncOpenAI(api_key=_openrouter_key, base_url=settings.OPENROUTER_BASE_URL)
+gemini_client = AsyncOpenAI(api_key=_gemini_key, base_url=settings.GEMINI_BASE_URL)
 
 
 def _load_groq_keys() -> list[str]:
     """Primary GROQ_API_KEY plus any GROQ_API_KEY_2, GROQ_API_KEY_3, ...
     found in the environment. Each represents a separate Groq account/key
     with its own independent daily token budget."""
-    keys = [settings.GROQ_API_KEY]
+    keys = [settings.GROQ_API_KEY or "gsk_placeholder"]
     i = 2
     while True:
         extra = os.getenv(f"GROQ_API_KEY_{i}")
