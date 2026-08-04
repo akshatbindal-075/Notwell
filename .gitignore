@@ -83,8 +83,10 @@ chroma_db/
 backend/chroma_store/
 chroma_store/
 
-# ── PDF output (generated at runtime, not source) ─────────────────────────────
+# ── Generated PDFs (created at runtime, not source) ───────────────────────────
 *.pdf
+backend/generated_pdfs/
+generated_pdfs/
 
 # ── Misc ──────────────────────────────────────────────────────────────────────
 .cache/
