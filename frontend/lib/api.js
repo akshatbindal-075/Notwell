@@ -1,8 +1,14 @@
 import axios from "axios";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000/api";
+let rawBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000/api";
+rawBaseUrl = rawBaseUrl.replace(/\/$/, "");
+if (!rawBaseUrl.endsWith("/api")) {
+  rawBaseUrl = `${rawBaseUrl}/api`;
+}
 
-const client = axios.create({ baseURL: API_BASE_URL, timeout: 20000 });
+const API_BASE_URL = rawBaseUrl;
+
+const client = axios.create({ baseURL: API_BASE_URL, timeout: 25000 });
 
 export async function startConsultation({ patientId, transcript, sessionId }) {
   const { data } = await client.post("/consultations/run", {
