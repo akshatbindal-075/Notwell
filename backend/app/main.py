@@ -18,10 +18,14 @@ app = FastAPI(
     version="1.0.0",
 )
 
+raw_origins = settings.ALLOWED_ORIGINS
+origins = [o.strip() for o in raw_origins if o.strip()]
+is_wildcard = "*" in origins
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.ALLOWED_ORIGINS,
-    allow_credentials=True,
+    allow_origins=["*"] if is_wildcard else origins,
+    allow_credentials=not is_wildcard,
     allow_methods=["*"],
     allow_headers=["*"],
 )
