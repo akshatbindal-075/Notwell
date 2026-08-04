@@ -1,13 +1,8 @@
-<table align="center" style="border:none;">
-  <tr style="border:none;">
-    <td style="border:none; vertical-align:middle;">
-      <img src="frontend/public/notewell-logo.png" width="60" alt="Notewell Logo">
-    </td>
-    <td style="border:none; vertical-align:middle; padding-left:12px;">
-      <h1 style="margin:0;">Notewell — AI Clinical Documentation Assistant</h1>
-    </td>
-  </tr>
-</table>
+<p align="center">
+  <img src="frontend/public/notewell-logo.png" width="70" alt="Notewell Logo">
+</p>
+
+# <p align="center">Notewell — AI Clinical Documentation Assistant</p>
 
 <p align="center">
   <img src="frontend/public/screenshot.png" alt="Notewell — AI Clinical Documentation Assistant UI" width="100%"/>
