@@ -106,7 +106,7 @@ class NotWellPDF(FPDF):
         self.set_x(self.l_margin + indent)
         self.set_font("Helvetica", "", 9)
         self._text(DARK)
-        self.cell(5, 5, "\u2022", ln=False)
+        self.cell(5, 5, "-", ln=False)
         self.multi_cell(0, 5, str(text))
 
     def table_header(self, cols: list, widths: list, row_h: float = 6):
@@ -318,10 +318,10 @@ def build_discharge_pdf(
         pdf.table_header(["Medication", "Dosage", "Frequency", "Active"], [65, 40, 45, 22])
         for i, med in enumerate(prescribed_medications):
             name   = med.get("name", str(med))       if isinstance(med, dict) else str(med)
-            dosage = med.get("dosage", "\u2014")      if isinstance(med, dict) else "\u2014"
-            freq   = med.get("frequency", "\u2014")   if isinstance(med, dict) else "\u2014"
-            active = "Yes" if med.get("active", True) if isinstance(med, dict) else True else "No"
-            pdf.table_row([name, dosage or "\u2014", freq or "\u2014", active], [65, 40, 45, 22], i)
+            dosage = med.get("dosage", "-")      if isinstance(med, dict) else "-"
+            freq   = med.get("frequency", "-")   if isinstance(med, dict) else "-"
+            active = "Yes" if (med.get("active", True) if isinstance(med, dict) else True) else "No"
+            pdf.table_row([name, dosage or "-", freq or "-", active], [65, 40, 45, 22], i)
         pdf._text(DARK)
         pdf.ln(1)
 
@@ -352,8 +352,8 @@ def build_discharge_pdf(
         pdf.table_header(["Reason", "Date", "Department", "Priority"], fw)
         for i, fu in enumerate(followup_items):
             reason   = fu.get("reason", str(fu))        if isinstance(fu, dict) else str(fu)
-            date     = fu.get("suggested_date", "\u2014") if isinstance(fu, dict) else "\u2014"
-            dept     = fu.get("department", "\u2014")   if isinstance(fu, dict) else "\u2014"
+            date     = fu.get("suggested_date", "-") if isinstance(fu, dict) else "-"
+            dept     = fu.get("department", "-")   if isinstance(fu, dict) else "-"
             priority = fu.get("priority", "low")        if isinstance(fu, dict) else "low"
             fill     = i % 2 == 0
             if fill:
