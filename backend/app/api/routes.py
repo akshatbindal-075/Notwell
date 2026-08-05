@@ -98,27 +98,42 @@ def download_discharge_pdf(session_id: str):
         )
         consultant_name = approval.reviewer_name if approval else ""
 
+        # ── Extract all structured pipeline data ──────────────────────────
+        patient_history = result.get("patient_history") or {}
+        clinical_note   = result.get("clinical_note")   or {}
         consult_summary = result.get("consult_summary") or {}
-        treatment_plan = result.get("treatment_plan") or {}
-        followup_plan = result.get("followup_plan") or {}
-
-        diagnosis_summary = consult_summary.get("summary") or "N/A"
-        treatment_text = treatment_plan.get("discharge_instructions") or "N/A"
-        followup_items = followup_plan.get("follow_ups") or []
-        followup_text = "\n".join(
-            f"- {f.get('reason', '')} ({f.get('suggested_date', '')}, {f.get('department', '')})"
-            for f in followup_items
-        ) or "No follow-ups scheduled."
+        treatment_plan  = result.get("treatment_plan")  or {}
+        followup_plan   = result.get("followup_plan")   or {}
 
         path = build_discharge_pdf(
-            patient_name=patient_name,
-            diagnosis_summary=diagnosis_summary,
-            treatment_plan_text=treatment_text,
-            followup_text=followup_text,
-            session_id=session_id,
-            patient_id=run_row.patient_id,
-            consultant_name=consultant_name,
+            patient_name       = patient_name,
+            session_id         = session_id,
+            patient_id         = run_row.patient_id,
+            consultant_name    = consultant_name,
+            # SOAP
+            subjective         = clinical_note.get("subjective", ""),
+            objective          = clinical_note.get("objective", ""),
+            assessment         = clinical_note.get("assessment", ""),
+            plan_soap          = clinical_note.get("plan", ""),
+            icd10_codes        = clinical_note.get("icd10_codes", []),
+            # Summary
+            chief_complaint    = consult_summary.get("chief_complaint", ""),
+            diagnosis_summary  = consult_summary.get("summary", ""),
+            key_findings       = consult_summary.get("key_findings", []),
+            risk_level         = consult_summary.get("risk_level", "low"),
+            # Treatment
+            treatment_steps        = treatment_plan.get("treatment_steps", []),
+            prescribed_medications = treatment_plan.get("prescribed_medications", []),
+            discharge_instructions = treatment_plan.get("discharge_instructions", ""),
+            precautions            = treatment_plan.get("precautions", []),
+            # Follow-up
+            followup_items  = followup_plan.get("follow_ups", []),
+            followup_notes  = followup_plan.get("notes", ""),
+            # Patient history
+            known_conditions = patient_history.get("known_conditions", []),
+            allergies        = patient_history.get("allergies", []),
         )
+
 
         if not os.path.exists(path):
             raise HTTPException(status_code=500, detail="PDF generation failed.")
