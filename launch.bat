@@ -1,6 +1,6 @@
 @echo off
 REM ============================================================
-REM  AI Clinical Documentation Assistant — Launcher
+REM  Notwell — Launcher
 REM  Starts backend (FastAPI) and frontend (Next.js) together.
 REM  Place this file at the project root (same level as
 REM  backend/ and frontend/ folders) before running.

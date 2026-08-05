@@ -12,9 +12,9 @@ logging.basicConfig(
 logger = logging.getLogger("main")
 
 app = FastAPI(
-    title="AI Clinical Documentation Assistant",
-    description="Multi-agent system for consultation summaries, clinical notes, "
-                 "patient history, discharge summaries, and follow-up planning.",
+    title="Notwell API",
+    description="Notwell: AI-powered clinical documentation assistant — "
+                 "6-agent pipeline for SOAP notes, treatment plans, and discharge summaries.",
     version="1.0.0",
 )
 
@@ -36,13 +36,13 @@ app.include_router(router, prefix="/api")
 @app.on_event("startup")
 def on_startup():
     init_db()
-    logger.info("Database initialized. AI Clinical Documentation Assistant ready.")
+    logger.info("Database initialized. Notwell ready.")
 
 
 @app.get("/")
 def root():
     return {
-        "app": "AI Clinical Documentation Assistant API",
+        "app": "Notwell API",
         "status": "online",
         "health": "/health",
         "docs": "/docs",
