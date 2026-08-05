@@ -12,18 +12,32 @@ import logging
 
 logger = logging.getLogger("tools.rag")
 
-_client = chromadb.PersistentClient(path="./chroma_store")
-_collection = _client.get_or_create_collection("patient_history")
+_client = None
+_collection = None
+
+
+def get_collection():
+    global _client, _collection
+    if _collection is None:
+        try:
+            _client = chromadb.PersistentClient(path="./chroma_store")
+            _collection = _client.get_or_create_collection("patient_history")
+        except Exception as e:
+            logger.error(f"ChromaDB initialization failed: {e}")
+            return None
+    return _collection
 
 
 def index_visit_note(patient_id: str, visit_id: str, text: str):
     """Call this after saving a visit — embeds and stores it for later retrieval."""
     try:
-        _collection.add(
-            ids=[visit_id],
-            documents=[text],
-            metadatas=[{"patient_id": patient_id}],
-        )
+        col = get_collection()
+        if col is not None:
+            col.add(
+                ids=[visit_id],
+                documents=[text],
+                metadatas=[{"patient_id": patient_id}],
+            )
     except Exception as e:
         logger.error(f"index_visit_note failed: {e}")
 
@@ -38,7 +52,10 @@ def retrieve_relevant_history(patient_id: str, query: str, top_k: int = 3) -> st
         top_k: Number of relevant snippets to return.
     """
     try:
-        results = _collection.query(
+        col = get_collection()
+        if col is None:
+            return "No historical records store available."
+        results = col.query(
             query_texts=[query],
             n_results=top_k,
             where={"patient_id": patient_id},
@@ -50,3 +67,4 @@ def retrieve_relevant_history(patient_id: str, query: str, top_k: int = 3) -> st
     except Exception as e:
         logger.error(f"retrieve_relevant_history failed: {e}")
         return f"Error retrieving history: {e}"
+

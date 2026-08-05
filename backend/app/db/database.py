@@ -25,8 +25,10 @@ def init_db():
         Base.metadata.create_all(bind=engine)
         logger.info("Database tables initialized successfully.")
     except Exception as e:
-        logger.error(f"Database initialization error: {e}")
-        raise e
+        logger.critical(
+            f"Database initialization failed! Check DATABASE_URL environment variable. Error: {e}"
+        )
+
 
 
 def get_db():
