@@ -1,13 +1,13 @@
 <h1 align="center">
-  <img src="frontend/public/notewell-logo.png" alt="Notewell Logo" width="28" style="vertical-align: middle;">
-  <span style="vertical-align: middle;">Notewell</span>
+  <img src="frontend/public/notwell-logo.png" alt="NotWell Logo" width="28" style="vertical-align: middle;">
+  <span style="vertical-align: middle;">NotWell</span>
 </h1>
 <p align="center">
   <strong>AI Clinical Documentation Assistant</strong>
 </p>
 
 <p align="center">
-  <img src="frontend/public/screenshot.png" alt="Notewell — AI Clinical Documentation Assistant UI" width="100%"/>
+  <img src="frontend/public/screenshot.png" alt="NotWell — AI Clinical Documentation Assistant UI" width="100%"/>
 </p>
 
 <p align="center">
@@ -102,7 +102,7 @@
 
 ## Data Flow
 
-The following sequence details how data flows through Notewell, highlighting agent handoffs, tool executions, vector RAG retrieval, and human-in-the-loop review.
+The following sequence details how data flows through NotWell, highlighting agent handoffs, tool executions, vector RAG retrieval, and human-in-the-loop review.
 
 ```mermaid
 flowchart TD
@@ -196,7 +196,7 @@ flowchart TD
 
 ```bash
 git clone https://github.com/akshatbindal-075/Notwell
-cd notewell
+cd NotWell
 ```
 
 ### 2. Backend Setup
@@ -267,7 +267,7 @@ npm run dev
 ## Project Structure
 
 ```
-notewell/
+NotWell/
 ├── backend/
 │   ├── app/
 │   │   ├── agents/              # 6 OpenAI Agents SDK agent definitions
@@ -305,7 +305,7 @@ notewell/
 │   ├── lib/
 │   │   └── api.js               # Backend REST API client integration
 │   ├── public/
-│   │   ├── notewell-logo.png
+│   │   ├── notwell-logo.png
 │   │   └── screenshot.png
 │   ├── tailwind.config.js
 │   └── .env.local.example

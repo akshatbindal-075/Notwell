@@ -75,11 +75,11 @@ export default function Home() {
       <header className="sticky top-0 z-50 bg-white border-b border-em-100 shadow-sm">
         <div className="max-w-screen-xl mx-auto px-6 py-3.5 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            {/* Notewell logo */}
+            {/* NotWell logo */}
             <div className="relative shrink-0">
               <Image
-                src="/notewell-logo.png"
-                alt="Notewell"
+                src="/notwell-logo.png"
+                alt="NotWell"
                 width={40}
                 height={40}
                 className="rounded-xl"
@@ -91,7 +91,7 @@ export default function Home() {
             </div>
             <div>
               <h1 className="font-bold text-em-900 text-base leading-tight tracking-tight">
-                Notewell
+                NotWell
               </h1>
               <p className="text-[11px] text-txt-muted">
                 AI clinical documentation · 6-agent pipeline
@@ -248,7 +248,7 @@ export default function Home() {
                 <div className="w-16 h-16 rounded-2xl mx-auto mb-4 flex items-center justify-center bg-em-50 border border-em-200">
                   <Sparkles className="w-7 h-7 text-em-500" />
                 </div>
-                <p className="font-semibold text-em-900">Notewell is ready</p>
+                <p className="font-semibold text-em-900">NotWell is ready</p>
                 <p className="text-sm text-txt-muted mt-2 leading-relaxed max-w-xs mx-auto">
                   Enter a patient ID and consultation transcript, then click "Run Agent Pipeline" to generate clinical documentation.
                 </p>
