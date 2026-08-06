@@ -40,8 +40,12 @@ export default function Home() {
 
   function handleSelectPatient(id) {
     setPatientId(id);
-    if (id && typeof window !== "undefined") {
-      localStorage.setItem("notwell_last_patient_id", id);
+    if (typeof window !== "undefined") {
+      if (id) {
+        localStorage.setItem("notwell_last_patient_id", id);
+      } else {
+        localStorage.removeItem("notwell_last_patient_id");
+      }
     }
   }
 
