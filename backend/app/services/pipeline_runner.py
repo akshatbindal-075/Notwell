@@ -211,6 +211,32 @@ async def run_consultation_pipeline(payload: ConsultationInput) -> PipelineResul
     else:
         result.status = "pending_approval" if (result.review and result.review.requires_human_approval) else "approved"
 
+    # Save Visit record to DB so patient's visit count and past history persist
+    visit_summary = ""
+    if result.consult_summary and result.consult_summary.summary:
+        visit_summary = result.consult_summary.summary
+    elif result.clinical_note and result.clinical_note.assessment:
+        visit_summary = result.clinical_note.assessment
+
+    existing_visit = db.query(Visit).filter(Visit.id == f"{session_id}-visit").first()
+    if not existing_visit:
+        visit_row = Visit(
+            id=f"{session_id}-visit",
+            patient_id=payload.patient_id,
+            date=datetime.utcnow(),
+            transcript=transcript,
+            summary_text=visit_summary,
+        )
+        db.add(visit_row)
+
+    # Update patient record with newly identified conditions/allergies
+    patient_row = db.query(Patient).filter(Patient.id == payload.patient_id).first()
+    if patient_row and result.patient_history:
+        if result.patient_history.known_conditions:
+            cond_set = set(patient_row.conditions or [])
+            cond_set.update(result.patient_history.known_conditions)
+            patient_row.conditions = list(cond_set)
+
     run_row.status = result.status
     _save_progress()
     db.close()

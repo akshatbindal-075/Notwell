@@ -1,10 +1,10 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   FileText, Sparkles, Download,
-  ChevronRight, HeartPulse
+  ChevronRight, HeartPulse, UserCheck
 } from "lucide-react";
 import AgentPipeline from "@/components/AgentPipeline";
 import AgentOutputTabs from "@/components/AgentOutputTabs";
@@ -12,7 +12,7 @@ import ApprovalCard from "@/components/ApprovalCard";
 import PatientSidebar from "@/components/PatientSidebar";
 import NewPatientForm from "@/components/NewPatientForm";
 import Toast from "@/components/Toast";
-import { startConsultation, getConsultationStatus, submitApproval } from "@/lib/api";
+import { startConsultation, getConsultationStatus, submitApproval, listPatients } from "@/lib/api";
 
 const FadeUp = ({ children, delay = 0, className = "" }) => (
   <motion.div
@@ -27,11 +27,34 @@ const FadeUp = ({ children, delay = 0, className = "" }) => (
 
 export default function Home() {
   const [patientId, setPatientId]   = useState("");
+  const [patientList, setPatientList] = useState([]);
   const [transcript, setTranscript] = useState("");
   const [running, setRunning]       = useState(false);
   const [result, setResult]         = useState(null);
   const [error, setError]           = useState(null);
   const [finalized, setFinalized]   = useState(false);
+
+  useEffect(() => {
+    const saved = typeof window !== "undefined" ? localStorage.getItem("notwell_last_patient_id") : null;
+    if (saved) setPatientId(saved);
+    fetchPatients();
+  }, []);
+
+  async function fetchPatients() {
+    try {
+      const data = await listPatients();
+      setPatientList(data || []);
+    } catch (e) {
+      console.error("Failed to load patient list", e);
+    }
+  }
+
+  function handleSelectPatient(id) {
+    setPatientId(id);
+    if (id && typeof window !== "undefined") {
+      localStorage.setItem("notwell_last_patient_id", id);
+    }
+  }
 
   async function handleRun() {
     if (!patientId || !transcript) return;
@@ -140,16 +163,32 @@ export default function Home() {
 
               <div className="p-5 space-y-4">
                 <div>
-                  <label className="section-label">Patient ID</label>
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="section-label">Patient ID</label>
+                    {patientList.length > 0 && (
+                      <select
+                        onChange={(e) => handleSelectPatient(e.target.value)}
+                        value={patientId}
+                        className="text-xs bg-em-50 border border-em-200 rounded-lg px-2 py-1 text-em-800 font-medium cursor-pointer focus:outline-none focus:ring-1 focus:ring-em-400"
+                      >
+                        <option value="">Select existing patient...</option>
+                        {patientList.map((p) => (
+                          <option key={p.id} value={p.id}>
+                            {p.name} ({p.id.slice(0, 8)}…)
+                          </option>
+                        ))}
+                      </select>
+                    )}
+                  </div>
                   <input
                     id="patient-id-input"
                     value={patientId}
-                    onChange={(e) => setPatientId(e.target.value)}
-                    placeholder="e.g. patient-0192"
+                    onChange={(e) => handleSelectPatient(e.target.value)}
+                    placeholder="e.g. patient-0192 or select above"
                     className="green-input mt-1"
                   />
                   <div className="mt-2">
-                    <NewPatientForm onCreated={(id) => setPatientId(id)} />
+                    <NewPatientForm onCreated={(id) => { handleSelectPatient(id); fetchPatients(); }} />
                   </div>
                 </div>
 

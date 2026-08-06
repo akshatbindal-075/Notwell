@@ -143,6 +143,24 @@ def download_discharge_pdf(session_id: str):
         db.close()
 
 
+@router.get("/patients")
+def list_patients(limit: int = 50):
+    db = SessionLocal()
+    try:
+        patients = db.query(Patient).order_by(Patient.created_at.desc()).limit(limit).all()
+        return [
+            {
+                "id": p.id,
+                "name": p.name,
+                "dob": p.dob,
+                "created_at": p.created_at.isoformat() if p.created_at else None,
+            }
+            for p in patients
+        ]
+    finally:
+        db.close()
+
+
 @router.post("/patients")
 def create_patient(name: str, dob: str = None):
     db = SessionLocal()

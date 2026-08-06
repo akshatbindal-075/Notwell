@@ -48,3 +48,9 @@ export async function getPatientVisits(patientId) {
   const { data } = await client.get(`/patients/${patientId}/visits`);
   return data;
 }
+
+export async function listPatients() {
+  const { data } = await client.get("/patients");
+  return data;
+}
+

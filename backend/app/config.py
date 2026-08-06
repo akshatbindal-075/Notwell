@@ -8,6 +8,11 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DEFAULT_DB_PATH = os.path.join(BASE_DIR, "clinical_assistant.db")
+DEFAULT_SESSION_DB_PATH = os.path.join(BASE_DIR, "sessions.db")
+
+
 class Settings:
     # --- LLM Providers (no OpenAI key required) ---
     GROQ_API_KEY: str = os.getenv("GROQ_API_KEY", "")
@@ -25,10 +30,10 @@ class Settings:
     MODEL_LONGCTX: str = os.getenv("MODEL_LONGCTX", "gemini-2.0-flash")            # Gemini — long patient history context
 
     # --- Database ---
-    DATABASE_URL: str = os.getenv("DATABASE_URL", "sqlite:///./clinical_assistant.db")
+    DATABASE_URL: str = os.getenv("DATABASE_URL", f"sqlite:///{DEFAULT_DB_PATH}")
 
     # --- Session persistence ---
-    SESSION_DB_PATH: str = os.getenv("SESSION_DB_PATH", "./sessions.db")
+    SESSION_DB_PATH: str = os.getenv("SESSION_DB_PATH", DEFAULT_SESSION_DB_PATH)
 
     # --- External tool APIs ---
     ICD10_API_BASE: str = "https://clinicaltables.nlm.nih.gov/api/icd10cm/v3/search"  # free, no key needed
