@@ -12,7 +12,7 @@ import ApprovalCard from "@/components/ApprovalCard";
 import PatientSidebar from "@/components/PatientSidebar";
 import NewPatientForm from "@/components/NewPatientForm";
 import Toast from "@/components/Toast";
-import { startConsultation, getConsultationStatus, submitApproval, listPatients } from "@/lib/api";
+import { startConsultation, getConsultationStatus, submitApproval } from "@/lib/api";
 
 const FadeUp = ({ children, delay = 0, className = "" }) => (
   <motion.div
@@ -27,7 +27,6 @@ const FadeUp = ({ children, delay = 0, className = "" }) => (
 
 export default function Home() {
   const [patientId, setPatientId]   = useState("");
-  const [patientList, setPatientList] = useState([]);
   const [transcript, setTranscript] = useState("");
   const [running, setRunning]       = useState(false);
   const [result, setResult]         = useState(null);
@@ -37,17 +36,7 @@ export default function Home() {
   useEffect(() => {
     const saved = typeof window !== "undefined" ? localStorage.getItem("notwell_last_patient_id") : null;
     if (saved) setPatientId(saved);
-    fetchPatients();
   }, []);
-
-  async function fetchPatients() {
-    try {
-      const data = await listPatients();
-      setPatientList(data || []);
-    } catch (e) {
-      console.error("Failed to load patient list", e);
-    }
-  }
 
   function handleSelectPatient(id) {
     setPatientId(id);
@@ -163,32 +152,16 @@ export default function Home() {
 
               <div className="p-5 space-y-4">
                 <div>
-                  <div className="flex items-center justify-between mb-1">
-                    <label className="section-label">Patient ID</label>
-                    {patientList.length > 0 && (
-                      <select
-                        onChange={(e) => handleSelectPatient(e.target.value)}
-                        value={patientId}
-                        className="text-xs bg-em-50 border border-em-200 rounded-lg px-2 py-1 text-em-800 font-medium cursor-pointer focus:outline-none focus:ring-1 focus:ring-em-400"
-                      >
-                        <option value="">Select existing patient...</option>
-                        {patientList.map((p) => (
-                          <option key={p.id} value={p.id}>
-                            {p.name} ({p.id})
-                          </option>
-                        ))}
-                      </select>
-                    )}
-                  </div>
+                  <label className="section-label">Patient ID</label>
                   <input
                     id="patient-id-input"
                     value={patientId}
                     onChange={(e) => handleSelectPatient(e.target.value)}
-                    placeholder="e.g. PAT-9A82F1 or select above"
+                    placeholder="e.g. PAT-9A82F1"
                     className="green-input mt-1"
                   />
                   <div className="mt-2">
-                    <NewPatientForm onCreated={(id) => { handleSelectPatient(id); fetchPatients(); }} />
+                    <NewPatientForm onCreated={(id) => handleSelectPatient(id)} />
                   </div>
                 </div>
 
