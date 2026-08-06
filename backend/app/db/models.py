@@ -16,6 +16,10 @@ def gen_patient_id():
     return gen_short_id("PAT")
 
 
+def gen_id():
+    return gen_short_id()
+
+
 class Patient(Base):
     __tablename__ = "patients"
     id = Column(String, primary_key=True, default=gen_patient_id)
