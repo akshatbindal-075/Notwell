@@ -101,7 +101,7 @@ export default function PatientSidebar({ patientId }) {
           </div>
           <div>
             <p className="font-bold text-white text-sm leading-tight">{patient.name}</p>
-            <p className="text-em-100 text-[11px] mt-0.5 font-mono">{patient.id.slice(0, 8)}…</p>
+            <p className="text-em-100 text-[11px] mt-0.5 font-mono">{patient.id}</p>
           </div>
         </div>
         {/* RAG status */}

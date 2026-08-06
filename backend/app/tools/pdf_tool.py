@@ -230,7 +230,7 @@ def build_discharge_pdf(
     pdf.set_font("Helvetica", "", 8)
     pdf._text(GREY)
     pdf.cell(half, 5, f"Patient ID: {patient_id or 'N/A'}", ln=False)
-    pdf.cell(half - 4, 5, f"Session: {session_id[:16]}", align="R", ln=True)
+    pdf.cell(half - 4, 5, f"Session: {session_id}", align="R", ln=True)
 
     pdf.set_x(cx + 4)
     pdf.cell(half, 5, f"Consultant: {consultant_name or 'N/A'}", ln=False)

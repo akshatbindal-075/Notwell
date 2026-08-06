@@ -7,13 +7,18 @@ import uuid
 Base = declarative_base()
 
 
-def gen_id():
-    return str(uuid.uuid4())
+def gen_short_id(prefix=""):
+    short_hash = uuid.uuid4().hex[:6].upper()
+    return f"{prefix}-{short_hash}" if prefix else short_hash
+
+
+def gen_patient_id():
+    return gen_short_id("PAT")
 
 
 class Patient(Base):
     __tablename__ = "patients"
-    id = Column(String, primary_key=True, default=gen_id)
+    id = Column(String, primary_key=True, default=gen_patient_id)
     name = Column(String, nullable=False)
     dob = Column(String)
     conditions = Column(JSON, default=list)

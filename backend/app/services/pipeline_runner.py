@@ -46,7 +46,7 @@ from app.agents.followup_agent import followup_agent
 from app.agents.documentation_reviewer_agent import documentation_reviewer_agent
 from app.services.structuring import structure_output
 from app.db.database import SessionLocal
-from app.db.models import PipelineRun, Visit
+from app.db.models import PipelineRun, Visit, Patient, gen_short_id
 from app.models.schemas import (
     PipelineResult,
     ConsultationInput,
@@ -104,7 +104,7 @@ async def _run_stage(agent, input_text, stage_name, output_type, task_desc, erro
 
 
 async def run_consultation_pipeline(payload: ConsultationInput) -> PipelineResult:
-    session_id = payload.session_id or str(uuid.uuid4())
+    session_id = payload.session_id or gen_short_id("SES")
     db = SessionLocal()
 
     run_row = db.query(PipelineRun).filter(PipelineRun.session_id == session_id).first()

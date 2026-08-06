@@ -174,7 +174,7 @@ export default function Home() {
                         <option value="">Select existing patient...</option>
                         {patientList.map((p) => (
                           <option key={p.id} value={p.id}>
-                            {p.name} ({p.id.slice(0, 8)}…)
+                            {p.name} ({p.id})
                           </option>
                         ))}
                       </select>
@@ -184,7 +184,7 @@ export default function Home() {
                     id="patient-id-input"
                     value={patientId}
                     onChange={(e) => handleSelectPatient(e.target.value)}
-                    placeholder="e.g. patient-0192 or select above"
+                    placeholder="e.g. PAT-9A82F1 or select above"
                     className="green-input mt-1"
                   />
                   <div className="mt-2">

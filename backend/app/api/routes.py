@@ -9,7 +9,7 @@ from app.services.pipeline_runner import run_consultation_pipeline
 from app.services.approval_manager import record_approval_decision
 from app.tools.pdf_tool import build_discharge_pdf
 from app.db.database import SessionLocal
-from app.db.models import Patient, PipelineRun, ApprovalRecord
+from app.db.models import Patient, PipelineRun, ApprovalRecord, gen_short_id
 
 logger = logging.getLogger("api")
 router = APIRouter()
@@ -17,16 +17,8 @@ router = APIRouter()
 
 @router.post("/consultations/run")
 async def run_consultation(payload: ConsultationInput):
-    """Kick off the agent pipeline in the background and return immediately.
-
-    The pipeline can take a while (multiple LLM calls per stage, plus any
-    provider rate-limit retries), so we don't hold the HTTP request open
-    for the whole run — that's what was causing frontend timeouts. Instead
-    we pre-create the DB row synchronously (so polling works right away),
-    launch the run as a background task, and the frontend polls
-    GET /consultations/{session_id} for live progress.
-    """
-    session_id = payload.session_id or str(uuid.uuid4())
+    """Kick off the agent pipeline in the background and return immediately."""
+    session_id = payload.session_id or gen_short_id("SES")
     payload.session_id = session_id
 
     db = SessionLocal()
