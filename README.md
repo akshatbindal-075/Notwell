@@ -21,13 +21,13 @@
   <img src="https://img.shields.io/badge/OpenAI%20Agents%20SDK-000000?style=flat-square" alt="Agents SDK"/>
   <img src="https://img.shields.io/badge/Groq-llama--3.3--70b-F55036?style=flat-square" alt="Groq"/>
   <img src="https://img.shields.io/badge/OpenRouter-Multi--LLM-6366F1?style=flat-square" alt="OpenRouter"/>
-  <img src="https://img.shields.io/badge/ChromaDB-Vector%20Store-FF6F00?style=flat-square" alt="ChromaDB"/>
-  <img src="https://img.shields.io/badge/SQLite-003B57?style=flat-square&logo=sqlite&logoColor=white" alt="SQLite"/>
+  <img src="https://img.shields.io/badge/Supabase-pgvector-3ECF8E?style=flat-square&logo=supabase&logoColor=white" alt="Supabase"/>
+  <img src="https://img.shields.io/badge/PostgreSQL-pgvector-4169E1?style=flat-square&logo=postgresql&logoColor=white" alt="pgvector"/>
   <img src="https://img.shields.io/badge/Human--in--the--Loop-Approval%20Gate-059669?style=flat-square" alt="Human-in-the-Loop"/>
 </p>
 
 <p align="center">
-  <em>An autonomous multi-agent clinical documentation system built on the OpenAI Agents SDK. It ingests raw consultation transcripts, retrieves historical patient context via ChromaDB RAG, writes structured SOAP notes, constructs evidence-based treatment plans, schedules follow-ups, enforces human-in-the-loop review, and exports finalized PDF discharge summaries.</em>
+  <em>An autonomous multi-agent clinical documentation system built on the OpenAI Agents SDK. It ingests raw consultation transcripts, retrieves historical patient context via Supabase pgvector RAG, writes structured SOAP notes, constructs evidence-based treatment plans, schedules follow-ups, enforces human-in-the-loop review, and exports finalized PDF discharge summaries.</em>
 </p>
 
 ---
@@ -47,7 +47,7 @@
 │  └───────────┬─────────────┘      └───────────┬─────────────┘      └──────────┬──────────┘  │
 │              │                                │                               │             │
 │              ▼                                ▼                               │             │
-│         [ChromaDB RAG]                  [ICD-10 Lookup]                       │             │
+│         [Supabase pgvector]             [ICD-10 Lookup]                       │             │
 │                                                                               │             │
 │  ┌─────────────────────────┐      ┌─────────────────────────┐                 │             │
 │  │ 6. Documentation        │◀─────│ 5. Follow-up           │◀────────────────┘             │
@@ -75,7 +75,7 @@
 
 | # | Agent / Module | Trigger | Primary Function | Key Tools & Operations |
 |---|----------------|---------|------------------|------------------------|
-| **01** | 📜 Patient History Agent | Pipeline Start | Context Retrieval | Queries ChromaDB vector store for prior consultation records (`rag_search`) and builds patient longitudinal baseline |
+| **01** | 📜 Patient History Agent | Pipeline Start | Context Retrieval | Queries Supabase pgvector store for prior consultation records (`rag_search`) and builds patient longitudinal baseline |
 | **02** | ✍️ Clinical Note Writer | Agent 01 Handoff | SOAP Note Generation | Structures chief complaint, S/O/A/P clinical findings, and resolves diagnosis codes (`icd10_lookup`) |
 | **03** | 📋 Medical Summary Agent | Agent 02 Handoff | Executive Synthesis | Distills complex clinical narrative into key medical insights, critical symptoms, and risk factors |
 | **04** | 💊 Treatment Planner Agent | Agent 03 Handoff | Care Plan Formulation | Generates pharmacological/non-pharmacological recommendations, checks drug safety (`medication_check`), and stratifies risk (`risk_scorer`) |
@@ -91,9 +91,9 @@
 |-------|-----------|---------|
 | **Agent Framework** | OpenAI Agents SDK (`openai-agents`) | Multi-agent handoff orchestration, tool binding, and dynamic routing |
 | **LLM Inference** | Groq (`llama-3.3-70b-versatile`) + OpenRouter | Primary fast inference engine with automatic multi-key rate-limit fallback |
-| **Vector Database** | ChromaDB | Local vector store for semantic retrieval of past patient consultations (RAG) |
+| **Vector Database** | Supabase (`pgvector`) | Cloud vector store for semantic retrieval of past patient consultations (RAG) |
 | **API Framework** | FastAPI + Uvicorn | Async REST API endpoints for pipeline execution, patient management, and PDF streaming |
-| **Database** | SQLite + SQLAlchemy | Persistent storage for patients, consultation sessions, and approval records |
+| **Database** | Supabase PostgreSQL + SQLAlchemy | Persistent storage for patients, consultation sessions, and approval records |
 | **Frontend UI** | Next.js 14 (App Router) + Tailwind CSS | Responsive 3-column clinical dashboard with Framer Motion animations |
 | **PDF Generation** | `fpdf2` | Programmatic PDF layout generation for clinical discharge summaries |
 | **Tool Integrations** | SendGrid API, ICD-10 Search, Risk Scorer | Automated external scheduling, notification, and clinical verification tools |
