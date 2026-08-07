@@ -20,7 +20,6 @@
   <img src="https://img.shields.io/badge/Next.js-14-000000?style=flat-square&logo=nextdotjs&logoColor=white" alt="Next.js"/>
   <img src="https://img.shields.io/badge/OpenAI%20Agents%20SDK-000000?style=flat-square" alt="Agents SDK"/>
   <img src="https://img.shields.io/badge/Groq-llama--3.3--70b-F55036?style=flat-square" alt="Groq"/>
-  <img src="https://img.shields.io/badge/OpenRouter-Multi--LLM-6366F1?style=flat-square" alt="OpenRouter"/>
   <img src="https://img.shields.io/badge/Supabase-pgvector-3ECF8E?style=flat-square&logo=supabase&logoColor=white" alt="Supabase"/>
   <img src="https://img.shields.io/badge/PostgreSQL-pgvector-4169E1?style=flat-square&logo=postgresql&logoColor=white" alt="pgvector"/>
   <img src="https://img.shields.io/badge/Human--in--the--Loop-Approval%20Gate-059669?style=flat-square" alt="Human-in-the-Loop"/>
@@ -90,7 +89,7 @@
 | Layer | Technology | Purpose |
 |-------|-----------|---------|
 | **Agent Framework** | OpenAI Agents SDK (`openai-agents`) | Multi-agent handoff orchestration, tool binding, and dynamic routing |
-| **LLM Inference** | Groq (`llama-3.3-70b-versatile`) + OpenRouter | Primary fast inference engine with automatic multi-key rate-limit fallback |
+| **LLM Inference** | Groq (`llama-3.3-70b-versatile`) | Ultra-fast sub-second LLM inference engine for multi-agent reasoning |
 | **Vector Database** | Supabase (`pgvector`) | Cloud vector store for semantic retrieval of past patient consultations (RAG) |
 | **API Framework** | FastAPI + Uvicorn | Async REST API endpoints for pipeline execution, patient management, and PDF streaming |
 | **Database** | Supabase PostgreSQL + SQLAlchemy | Persistent storage for patients, consultation sessions, and approval records |
