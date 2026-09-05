@@ -31,7 +31,11 @@ def record_approval_decision(decision: ApprovalDecision) -> dict:
             run_row.status = "approved"
             if decision.edited_fields:
                 merged = dict(run_row.result_json or {})
-                merged.update(decision.edited_fields)
+                for k, v in decision.edited_fields.items():
+                    if isinstance(v, dict) and isinstance(merged.get(k), dict):
+                        merged[k] = {**merged[k], **v}
+                    else:
+                        merged[k] = v
                 run_row.result_json = merged
         else:
             run_row.status = "rejected"

@@ -4,7 +4,8 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   FileText, Sparkles, Download,
-  ChevronRight, HeartPulse, UserCheck
+  ChevronRight, HeartPulse, UserCheck,
+  XCircle, AlertCircle
 } from "lucide-react";
 import AgentPipeline from "@/components/AgentPipeline";
 import AgentOutputTabs from "@/components/AgentOutputTabs";
@@ -32,6 +33,7 @@ export default function Home() {
   const [result, setResult]         = useState(null);
   const [error, setError]           = useState(null);
   const [finalized, setFinalized]   = useState(false);
+  const [approvalStatus, setApprovalStatus] = useState(null);
 
   useEffect(() => {
     const saved = typeof window !== "undefined" ? localStorage.getItem("notwell_last_patient_id") : null;
@@ -51,7 +53,7 @@ export default function Home() {
 
   async function handleRun() {
     if (!patientId || !transcript) return;
-    setRunning(true); setError(null); setResult(null); setFinalized(false);
+    setRunning(true); setError(null); setResult(null); setFinalized(false); setApprovalStatus(null);
     try {
       const { session_id } = await startConsultation({ patientId, transcript });
       setResult({ session_id, status: "in_progress" });
@@ -72,16 +74,34 @@ export default function Home() {
     } catch (e) { setError(e?.response?.data?.detail || e.message); setRunning(false); }
   }
 
-  async function handleApprovalDecision({ approved, reviewerName, comments }) {
+  async function handleApprovalDecision({ approved, reviewerName, comments, editedFields }) {
     if (!result?.session_id) return;
     try {
-      await submitApproval({ sessionId: result.session_id, approved, reviewerName, comments });
+      await submitApproval({ sessionId: result.session_id, approved, reviewerName, comments, editedFields });
       setFinalized(true);
+      const nextStatus = approved ? "approved" : "rejected";
+      setApprovalStatus(nextStatus);
+      setResult((prev) => {
+        if (!prev) return prev;
+        const updated = { ...prev, status: nextStatus };
+        if (editedFields) {
+          for (const [k, v] of Object.entries(editedFields)) {
+            if (typeof v === "object" && v !== null && typeof updated[k] === "object" && updated[k] !== null) {
+              updated[k] = { ...updated[k], ...v };
+            } else {
+              updated[k] = v;
+            }
+          }
+        }
+        return updated;
+      });
     } catch (e) { setError(e?.response?.data?.detail || e.message); }
   }
 
   const pdfUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000/api"}/consultations/${result?.session_id}/pdf`;
-  const needsApproval = result?.status === "pending_approval" && !finalized;
+  const isApproved = approvalStatus === "approved" || result?.status === "approved";
+  const isRejected = approvalStatus === "rejected" || result?.status === "rejected";
+  const needsApproval = result?.status === "pending_approval" && !finalized && !isApproved && !isRejected;
 
   return (
     <main className="min-h-screen">
@@ -223,10 +243,10 @@ export default function Home() {
           {(running || result) && <AgentOutputTabs result={result} running={running} />}
 
           {needsApproval && (
-            <ApprovalCard review={result?.review} onDecision={handleApprovalDecision} />
+            <ApprovalCard review={result?.review} result={result} onDecision={handleApprovalDecision} />
           )}
 
-          {finalized && (
+          {isApproved && (
             <motion.div
               initial={{ opacity: 0, scale: 0.97 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -240,19 +260,45 @@ export default function Home() {
                 <div className="w-14 h-14 rounded-2xl mx-auto mb-4 flex items-center justify-center bg-em-100 border border-em-200">
                   <Download className="w-6 h-6 text-em-700" />
                 </div>
-                <p className="font-bold text-lg text-em-900">Documentation Finalized</p>
+                <p className="font-bold text-lg text-em-900">Documentation Finalized & Approved</p>
                 <p className="text-txt-muted text-sm mt-1">Discharge summary is ready for download.</p>
                 <a
                   href={pdfUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   id="pdf-download-link"
-                  className="inline-flex items-center gap-2 mt-5 px-6 py-3 rounded-xl text-sm font-bold text-white transition-all"
+                  className="inline-flex items-center gap-2 mt-5 px-6 py-3 rounded-xl text-sm font-bold text-white transition-all hover:opacity-95"
                   style={{ background: "linear-gradient(135deg, #059669, #0d9488)", boxShadow: "0 4px 14px rgba(5,150,105,0.35)" }}
                 >
                   <Download className="w-4 h-4" />
                   Download Discharge PDF
                 </a>
+              </div>
+            </motion.div>
+          )}
+
+          {isRejected && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.97 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
+              className="card p-8 text-center relative overflow-hidden"
+            >
+              {/* Danger/warning tint wash */}
+              <div className="absolute inset-0 pointer-events-none"
+                style={{ background: "linear-gradient(135deg, #fff1f2 0%, #fff7ed 100%)" }} />
+              <div className="relative">
+                <div className="w-14 h-14 rounded-2xl mx-auto mb-4 flex items-center justify-center bg-rose-50 border border-rose-200">
+                  <XCircle className="w-6 h-6 text-rose-600" />
+                </div>
+                <p className="font-bold text-lg text-slate-900">Documentation Declined</p>
+                <p className="text-txt-muted text-sm mt-1 max-w-sm mx-auto leading-relaxed">
+                  The clinical documentation was declined during review. PDF discharge summary is unavailable for unapproved consultations.
+                </p>
+                <div className="mt-4 inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold text-rose-700 bg-rose-100/70 border border-rose-200">
+                  <AlertCircle className="w-3.5 h-3.5 text-rose-600" />
+                  Discharge PDF download disabled
+                </div>
               </div>
             </motion.div>
           )}

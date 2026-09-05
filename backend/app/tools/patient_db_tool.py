@@ -44,6 +44,7 @@ def get_past_visits(patient_id: str, limit: int = 5) -> str:
         visits = (
             db.query(Visit)
             .filter(Visit.patient_id == patient_id)
+            .filter(~Visit.summary_text.like("%SCHEDULED FOLLOW-UP%"))
             .order_by(Visit.date.desc())
             .limit(limit)
             .all()

@@ -195,7 +195,13 @@ def get_patient_visits(patient_id: str):
         patient = db.query(Patient).filter(Patient.id == patient_id).first()
         if not patient:
             raise HTTPException(status_code=404, detail="Patient not found")
-        visits = db.query(Visit).filter(Visit.patient_id == patient_id).order_by(Visit.date.desc()).all()
+        visits = (
+            db.query(Visit)
+            .filter(Visit.patient_id == patient_id)
+            .filter(~Visit.summary_text.like("%SCHEDULED FOLLOW-UP%"))
+            .order_by(Visit.date.desc())
+            .all()
+        )
         return {
             "patient_id": patient_id,
             "visit_count": len(visits),

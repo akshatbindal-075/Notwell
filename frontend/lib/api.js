@@ -24,12 +24,13 @@ export async function getConsultationStatus(sessionId) {
   return data;
 }
 
-export async function submitApproval({ sessionId, approved, reviewerName, comments }) {
+export async function submitApproval({ sessionId, approved, reviewerName, comments, editedFields }) {
   const { data } = await client.post("/consultations/approve", {
     session_id: sessionId,
     approved,
     reviewer_name: reviewerName,
     comments,
+    edited_fields: editedFields || {},
   });
   return data;
 }

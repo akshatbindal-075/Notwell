@@ -94,18 +94,24 @@ function PatientHistoryTab({ data, running }) {
           </div>
         </div>
       )}
-      {data.past_visits_summary?.length > 0 && (
-        <div>
-          <SLabel>Past Visits</SLabel>
-          <ul className="space-y-1">
-            {data.past_visits_summary.map((v, i) => (
-              <li key={i} className="text-sm text-em-800 flex items-start gap-2">
-                <span className="text-em-400 mt-0.5">•</span>{v}
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+      {(() => {
+        const filteredVisits = (data.past_visits_summary || []).filter(
+          (v) => !String(v).toLowerCase().includes("scheduled follow-up")
+        );
+        if (filteredVisits.length === 0) return null;
+        return (
+          <div>
+            <SLabel>Past Visits</SLabel>
+            <ul className="space-y-1">
+              {filteredVisits.map((v, i) => (
+                <li key={i} className="text-sm text-em-800 flex items-start gap-2">
+                  <span className="text-em-400 mt-0.5">•</span>{v}
+                </li>
+              ))}
+            </ul>
+          </div>
+        );
+      })()}
     </div>
   );
 }

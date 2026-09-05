@@ -88,8 +88,12 @@ export default function PatientSidebar({ patientId }) {
   const conditions  = patient.conditions  || [];
   const meds        = patient.medications || [];
   const allergies   = patient.allergies   || [];
-  const visitCount  = visits?.visit_count ?? 0;
-  const visitList   = visits?.visits      ?? [];
+  const pastVisits  = (visits?.visits ?? []).filter((v) => {
+    const text = (v.summary_text || "").toLowerCase();
+    return !text.includes("scheduled follow-up") && !text.includes("[scheduled follow-up]");
+  });
+  const visitCount  = pastVisits.length;
+  const visitList   = pastVisits;
 
   return (
     <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="card overflow-hidden">
