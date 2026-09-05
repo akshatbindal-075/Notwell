@@ -62,13 +62,13 @@ def fast_model() -> OpenAIChatCompletionsModel:
 
 
 def tool_model() -> OpenAIChatCompletionsModel:
-    """Groq's llama-3.3-70b-versatile (primary key) — used for the free-text
+    """Groq's reasoning model — used for the free-text
     tool-calling phase of agents that use tools."""
-    return OpenAIChatCompletionsModel(model="llama-3.3-70b-versatile", openai_client=groq_client)
+    return OpenAIChatCompletionsModel(model=settings.MODEL_REASONING, openai_client=groq_client)
 
 
 def reasoning_model() -> OpenAIChatCompletionsModel:
-    """Groq's larger gpt-oss-120b — used where multi-step reasoning quality matters."""
+    """Groq's larger model — used where multi-step reasoning quality matters."""
     return OpenAIChatCompletionsModel(model=settings.MODEL_REASONING, openai_client=groq_client)
 
 
@@ -79,12 +79,12 @@ def longcontext_model() -> OpenAIChatCompletionsModel:
 
 def tool_model_candidates() -> list[OpenAIChatCompletionsModel]:
     """Ordered fallback list for the tool-calling phase. Tries
-    llama-3.3-70b-versatile on every configured Groq key first (each key =
+    settings.MODEL_REASONING on every configured Groq key first (each key =
     a separate daily-token bucket), then falls back to the smaller,
-    separately-rate-limited gpt-oss-20b on the primary key as a last
+    separately-rate-limited MODEL_FAST on the primary key as a last
     resort before giving up."""
     candidates = [
-        OpenAIChatCompletionsModel(model="llama-3.3-70b-versatile", openai_client=c)
+        OpenAIChatCompletionsModel(model=settings.MODEL_REASONING, openai_client=c)
         for c in _groq_clients
     ]
     candidates.append(OpenAIChatCompletionsModel(model=settings.MODEL_FAST, openai_client=_groq_clients[0]))
@@ -96,6 +96,6 @@ def structuring_model_candidates() -> list[OpenAIChatCompletionsModel]:
     across every configured Groq key, so a rate-limited key doesn't block
     structuring if another key still has budget."""
     return [
-        OpenAIChatCompletionsModel(model="llama-3.3-70b-versatile", openai_client=c)
+        OpenAIChatCompletionsModel(model=settings.MODEL_FAST, openai_client=c)
         for c in _groq_clients
     ]

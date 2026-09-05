@@ -11,11 +11,12 @@ unsupported fields in the request.
 import json
 import logging
 import asyncio
+from app.config import settings
 from app.services.model_providers import _groq_clients, is_rate_limit_error
 
 logger = logging.getLogger("structuring")
 
-MODEL = "llama-3.3-70b-versatile"
+MODEL = settings.MODEL_FAST
 
 
 def _strip_code_fences(text: str) -> str:
@@ -57,6 +58,7 @@ async def structure_output(raw_text: str, output_type, task_description: str):
                         {"role": "user",   "content": prompt},
                     ],
                     temperature=0.1,
+                    max_completion_tokens=8192,
                 )
                 raw_json = response.choices[0].message.content or ""
                 cleaned  = _strip_code_fences(raw_json)

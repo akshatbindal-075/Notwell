@@ -25,9 +25,9 @@ class Settings:
     GEMINI_BASE_URL: str = "https://generativelanguage.googleapis.com/v1beta/openai/"
 
     # --- Model assignment per agent (override via env if needed) ---
-    MODEL_FAST: str = os.getenv("MODEL_FAST", "llama-3.3-70b-versatile")          # Groq — high volume agents
-    MODEL_REASONING: str = os.getenv("MODEL_REASONING", "deepseek/deepseek-chat")  # OpenRouter — planning/review
-    MODEL_LONGCTX: str = os.getenv("MODEL_LONGCTX", "gemini-2.0-flash")            # Gemini — long patient history context
+    MODEL_FAST: str = os.getenv("MODEL_FAST", "openai/gpt-oss-20b")
+    MODEL_REASONING: str = os.getenv("MODEL_REASONING", "openai/gpt-oss-120b")
+    MODEL_LONGCTX: str = os.getenv("MODEL_LONGCTX", "gemini-3.6-flash")
 
     # --- Database ---
     DATABASE_URL: str = os.getenv("DATABASE_URL", f"sqlite:///{DEFAULT_DB_PATH}")

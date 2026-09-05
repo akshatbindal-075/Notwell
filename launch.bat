@@ -6,6 +6,10 @@ REM  Place this file at the project root (same level as
 REM  backend/ and frontend/ folders) before running.
 REM ============================================================
 
+REM Ensure Node.js is in PATH even if Explorer has not refreshed yet
+set "NODE_PKG=C:\Users\Aksh\AppData\Local\Microsoft\WinGet\Packages\OpenJS.NodeJS.LTS_Microsoft.Winget.Source_8wekyb3d8bbwe\node-v24.19.0-win-x64"
+if exist "%NODE_PKG%" set "PATH=%NODE_PKG%;%PATH%"
+
 echo Starting backend (FastAPI)...
 start "Backend - FastAPI" cmd /k "cd /d %~dp0backend && call venv\Scripts\activate && uvicorn app.main:app --reload"
 
